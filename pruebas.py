@@ -25,10 +25,11 @@ m =0
 
 while running:
     
-    anterior = ladosPieza(lista,actual,rotacion,-1)
-    siguiente = ladosPieza(lista,actual,rotacion,1)
-    """ anterior = True
-    siguiente = True """
+    """ anterior = ladosPieza(lista,actual,rotacion,-1)  
+    siguiente = ladosPieza(lista,actual,rotacion,1) """
+    # Falta organizar la verificacion de la rotacion que no se salga de la pantalla
+    anterior = True
+    siguiente = True
 
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -175,7 +176,10 @@ while running:
     maxX = actual.maxX(lista)
     keys = pygame.key.get_pressed()
 
-    """ x """
+    lista[0].y += 150 * dt    # lista[0].y += 30 * dt 
+    lista[1].y += 150 * dt
+    lista[2].y += 150 * dt
+    lista[3].y += 150 * dt    
     if keys[pygame.K_DOWN]:
         for objeto in lista:
             y = objeto.y
@@ -204,25 +208,19 @@ while running:
                 else:
                     pass  
 
-    if keys[pygame.K_RIGHT]:
-            print("Der")
-            print(maxX)
-           
-            for objeto in lista:
-                x2 = objeto.x
-                if x2 == maxX:
-                    print(2222)
-                    if x2 >=420:
-                        pass
-                    else:
-                        print(3333)
-                        for bloque in lista:
-                            print("X " + str(bloque.x)+" Y "+str(bloque.y))
-                        lista[0].x += 300 * dt
-                        lista[1].x += 300 * dt
-                        lista[2].x += 300 * dt
-                        lista[3].x += 300 * dt
-                        print(555)
+    if keys[pygame.K_RIGHT]:           
+        for objeto in lista:
+            x2 = objeto.x
+            if x2 == maxX:
+
+                if x2 >=420:
+                    pass
+                else:
+
+                    lista[0].x += 300 * dt
+                    lista[1].x += 300 * dt
+                    lista[2].x += 300 * dt
+                    lista[3].x += 300 * dt
 
     if tablero[2][5] == 1:
         listaO.clear()
