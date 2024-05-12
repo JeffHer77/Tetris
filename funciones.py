@@ -399,21 +399,55 @@ def posLado(pieza):
     return pieza
 
 def ladosPieza(lista,pieza,rotacion,move):
-    rotacion = rotacion + move
+    rotacionX = rotacion + move
     Band = False
     minI = minXLis(lista)
     minJ = minYLis(lista)
-    if rotacion <0:
-        rotacion = 3
-    elif rotacion > 3:
-        rotacion = 0
-    cubos = pieza.rotar(rotacion,lista,minI,minJ)
-    for bloque in cubos:
-        if bloque.x > 0 and bloque.x<420:
+    if rotacionX <0:
+        rotacionX = 3
+    elif rotacionX > 3:
+        rotacionX = 0
+    valX = []
+    valY = []
+    for bloques in lista:
+        valX.append(bloques.x)
+        valY.append(bloques.y)
+    if pieza.pieza == 'cuadrado':
+        rotacionX = 0
+    elif pieza.pieza == 'l':
+                
+        if rotacionX%2 == 0:
+            rotacionX =1
+        else:
+            rotacionX = 0
+    elif pieza.pieza == 'z': 
+        if rotacionX%2 == 0:
+            rotacionX =1
+        else:
+            rotacionX = 0
+    elif pieza.pieza == 's': 
+        if rotacionX%2 == 0:
+            rotacionX = 1
+        else:
+            rotacionX = 0
+            increm = 0
+            forma = pieza.piezas.get(pieza.pieza)[rotacionX]
+            for i in range(0,len(forma),1):
+                y = 0
+                for j in range(0,(len(forma[0])),1):
+                    # [[1,1,0],[0,1,1]]
+                    # [ [0,1],[1,1],[1,0]]
+                    value = forma[i][j]
+                    if value == 1:
+                        valX[y] = forma[i][j]*(j+minI)*30
+                        valY[y] = forma[i][j]*(i+minJ)*30
+                        increm+=1
+                    y += 1
+    for coor in valX:
+        if coor > 0 and coor<=420:
             Band = True 
         else:
             Band = False
             break
-    print("Bool"+str(cubos == lista))
     return Band
 

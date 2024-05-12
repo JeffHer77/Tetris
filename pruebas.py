@@ -12,8 +12,8 @@ for i in range(0,15,1):
     tablero = unos(tablero,30,i)
 gen = generar(120,-30)
 piece =  gen.randomPieza()
-color = gen.colores.get(piece)
-ele = gen.generaPiece(piece,color)
+color = gen.colores.get('l')
+ele = gen.generaPiece('l',color)
 rotacion = 0
 lista = ele.dibujar(rotacion)
 actual = ele
@@ -25,11 +25,11 @@ m =0
 
 while running:
     
-    """ anterior = ladosPieza(lista,actual,rotacion,-1)  
-    siguiente = ladosPieza(lista,actual,rotacion,1) """
+     
+    
     # Falta organizar la verificacion de la rotacion que no se salga de la pantalla
-    anterior = True
-    siguiente = True
+    """ anterior = True
+    siguiente = True """
 
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -38,7 +38,14 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x:
-                if siguiente:
+                var = lista.copy()
+                siguiente = ladosPieza(var,actual,rotacion,1)
+                #print(siguiente)
+                for elm in lista:
+                        print(elm.x)
+                        print(elm.y)
+                if siguiente == True:
+                    print(3)
                     rotacion+=1
                         
                     if rotacion>3:
@@ -50,7 +57,8 @@ while running:
                     lista = actual.rotar(rotacion,lista,minX,minY)
             
             if event.key == pygame.K_z:
-                if anterior:
+                anterior = ladosPieza(lista,actual,rotacion,-1) 
+                if anterior== True:
                     rotacion-= 1
                     if rotacion<0:
                         rotacion = 3
@@ -75,6 +83,7 @@ while running:
     for i in range(0,900,30):
         rellenar(screen,(0,i),(450,i))
     fichaList = posTabl(lista)
+    #print(fichaList)
     minX = mininX(fichaList) 
     maxX = maxiX(fichaList) 
     un = sombra(tablero,minX,maxX)
