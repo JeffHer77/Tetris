@@ -28,6 +28,10 @@ while running:
      
     
     # Falta organizar la verificacion de la rotacion que no se salga de la pantalla
+    anterior = ladosPieza(lista,actual,rotacion,-1)
+    siguiente = ladosPieza(lista,actual,rotacion,1)
+    """ anterior = True
+    siguiente = True """
     """ anterior = True
     siguiente = True """
 
