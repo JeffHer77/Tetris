@@ -6,6 +6,14 @@ class Bloque:
         self.y = y
         self.color = color
 
+    def __getitem__(self, item):
+        if item == "x":
+            return self.x
+        elif item == "y":
+            return self.y
+        else:
+            return None
+
 class Pieza:
 
     listPie = ['eled','elei','cuadrado',

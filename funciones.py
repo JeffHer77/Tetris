@@ -81,9 +81,9 @@ def redondear (lista):
         elemento.y = listaY.get(redonY)
     return lista
 
-def posTabl (lista):
+def posTabl (listac):
     posList = []
-    
+    lista = listac[:]
     for elemento in lista:
         i = elemento.x
         j = elemento.y
@@ -172,7 +172,7 @@ def ordenar(tablero):
                 break
     return min 
             
-def sombra(tablero,ini,fin):
+def sombra(tablero,ini,fin):   # Detectar la posicion mas alta en y de la ficha en su sombra
     min = {} 
     valor = 0
     for i in range(ini,fin+1,1):
@@ -186,77 +186,34 @@ def sombra(tablero,ini,fin):
     """ if min == {}:
         for i in range(ini,fin+1,1):
             min[i]= 29 """
-    return min 
-
-def maxiX(lista):
-        max = 0
-        for i in range (0,len(lista),1):
-            x = int(lista[i][0]/30)
-            if x> max:
-                max = x
-        return max
-def mininX(lista):
-        min = 1000
-        for i in range (0,len(lista),1):
-            x = int(lista[i][0]/30)
-            if x< min:
-                 min = x
-        return min
-
-def minXLis(lista):
+    return min
+def minValues(paquete, valor,indice=0):
     min = 1000
-    for objeto in lista:
-        x = int(objeto.x/30)
-        if x< min:
-             min = x
+    if valor == 'x' or  valor == 'y':
+        for objeto in paquete:
+            aux = int(objeto[valor] / 30)
+            if aux < min:
+                min = aux
+    elif valor == 'tup':
+        for i in range(0, len(paquete), 1):
+            aux = int(paquete[i][indice] / 30)
+            if aux < min:
+                min = aux
     return min
 
-def maxXLis(lista):
+def maxValues(paquete, valor, indice=0):
     max = 0
-    for objeto in lista:
-        x = int(objeto.x/30)
-        if x> max:
-            max = x
+    if valor == 'x' or valor == 'y':
+        for objeto in paquete:
+            aux = int(objeto[valor]/30)
+            if aux> max:
+                    max = aux
+    elif valor == 'tup':
+        for i in range(0, len(paquete), 1):
+            aux = int(paquete[i][indice] / 30)
+            if aux > max:
+                max = aux
     return max
-def maxiY(lista):
-    max = 0
-    for i in range (0,len(lista),1):
-        y = int(lista[i].y/30)
-        if y> max:
-                max = y
-    return max
-
-def maxiYTup(tupla):
-    max = 0
-    for i in range (0,len(tupla),1):
-        y = int(tupla[i][1]/30)
-        if y> max:
-                max = y
-    return max
-
-
-def mininY(lista):
-    min = 1000
-    for i in range (0,len(lista),1):
-        y = int(lista[i][1]/30)
-        if y< min:
-            min = y
-    return min
-def minYLis(lista):
-    min = 1000
-    for objeto in lista:
-        y = int(objeto.y/30)
-        if y< min:
-            min = y
-    return min
-""" def mininY(lista):
-    min = 1000
-    for i in range (0,len(lista),1):
-        y = int(lista[i])
-        if y< min:
-            min = y
-    return min """
-
 def unosJ(tablero,pos,posy): # el ciclo se corta cuando j es mayor que cero sin ver si hay fichas encima o no
     valor = 0
     encima = 0
@@ -275,10 +232,10 @@ def verJ(tablero,pos,posy):
     min = 40
     for j in range(0,len(tablero),1):
         valor = tablero[j][pos]
-        if valor == 1: 
+        if valor == 1:
             if j < min and j > posy:
                 min = j
-                
+
     return min
 
 def cerosTabl(tablero,lista):
@@ -299,7 +256,7 @@ def posicionar (tablero,lista,menX,maxX,menY):   # La verificacion de la columna
         for j in range (menY,len(tablero),1):
             valor = tablero[j][i]
             if valor == 1:
-                y = j 
+                y = j
                 for objeto in lista:
                     valY = objeto.y /30
                     if  y-valY -1 <= 1:
@@ -322,7 +279,7 @@ def verificarUnos(tablero):
         total = tablero[i].count(1)
         if total == 15:
             lista.append(i)
-            
+
         j+=1
     return lista
 
@@ -330,7 +287,7 @@ def eliminarUnos(listaObjects,filaList):
     borrar = []
     for i in range (0,len(listaObjects),1):
         y = int(listaObjects[i].y/30)
-        for elem in filaList:    
+        for elem in filaList:
             if y == elem:
                     borrar.append(i)
     borrar.sort(reverse=True)
@@ -345,7 +302,7 @@ def actualizarTablero(tablero,rows):
     return tablero
 
 def bajarObj(lineas,listaObj):
-    
+
     for bloques in listaObj:
         lineaY = bloques.y
         for linea in lineas:
@@ -367,34 +324,34 @@ def bajarUnos(listaObj):
 def posLado(pieza):
     for elemento in pieza:
         x = elemento.x
-        if x <0: 
+        if x <0:
             x =0
         redX = math.floor(x)
         resX = x-redX
         if resX >= 0.5:
-            x =math.ceil(x) 
+            x =math.ceil(x)
             #print("X redonde " +str(x))
-            decimalX = x/30 
+            decimalX = x/30
             redX = math.floor(decimalX)
             resX = decimalX - redX
             if resX >= 0.5:
                 redonX = math.ceil(x/30)
-                #print("RedonX es C"+str(redonX)) 
+                #print("RedonX es C"+str(redonX))
             else:
                 redonX = math.floor(x/30)
-                #print("RedonX es F "+str(redonX)) 
+                #print("RedonX es F "+str(redonX))
         else:
-            x =math.floor(x) 
+            x =math.floor(x)
             #print("X redonde " +str(x))
-            decimalX = x/30 
+            decimalX = x/30
             redX = math.floor(decimalX)
             resX = decimalX - redX
             if resX >= 0.5:
                 redonX = math.ceil(x/30)
-                #print("RedonX es C "+str(redonX)) 
+                #print("RedonX es C "+str(redonX))
             else:
                 redonX = math.floor(x/30)
-                #print("RedonX es F "+str(redonX)) 
+                #print("RedonX es F "+str(redonX))
         elemento.x = listaX.get(redonX)
     return pieza
 
@@ -415,17 +372,17 @@ def ladosPieza(lista,pieza,rotacion,move):
     if pieza.pieza == 'cuadrado':
         rotacionX = 0
     elif pieza.pieza == 'l':
-                
+
         if rotacionX%2 == 0:
             rotacionX =1
         else:
             rotacionX = 0
-    elif pieza.pieza == 'z': 
+    elif pieza.pieza == 'z':
         if rotacionX%2 == 0:
             rotacionX =1
         else:
             rotacionX = 0
-    elif pieza.pieza == 's': 
+    elif pieza.pieza == 's':
         if rotacionX%2 == 0:
             rotacionX = 1
         else:
@@ -445,7 +402,7 @@ def ladosPieza(lista,pieza,rotacion,move):
                 y += 1
     for coor in valX:
         if coor > 0 and coor<450:
-            Band = True 
+            Band = True
         else:
             Band = False
             break

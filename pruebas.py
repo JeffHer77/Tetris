@@ -55,9 +55,9 @@ while running:
                     if rotacion>3:
                         rotacion = 0
                         
-                    fichaLi = posTabl(lista)
-                    minX = mininX(fichaList) 
-                    minY = mininY(fichaList) 
+                    fichaList = posTabl(lista)
+                    minX = minValues(fichaList,'tup',0)
+                    minY = minValues(fichaList,'tup',1)
                     lista = actual.rotar(rotacion,lista,minX,minY)
             
             if event.key == pygame.K_z:
@@ -67,10 +67,10 @@ while running:
                     if rotacion<0:
                         rotacion = 3
                 
-                    fichaLi = posTabl(lista)
-                    minX = mininX(fichaList) 
-                    minY = mininY(fichaList) 
-                    lista = actual.rotar(rotacion,lista,minX,minY)
+                    fichaList = posTabl(lista)
+                    minX = minValues(fichaList, 'tup', 0)
+                    minY = minValues(fichaList, 'tup', 1)
+                lista = actual.rotar(rotacion,lista,minX,minY)
             
     # fill the screen with a color to wipe away anything from last frame
     screen.fill((49,38,75))
@@ -88,8 +88,9 @@ while running:
         rellenar(screen,(0,i),(450,i))
     fichaList = posTabl(lista)
     #print(fichaList)
-    minX = mininX(fichaList) 
-    maxX = maxiX(fichaList) 
+    minX = minValues(fichaList, 'tup', 0)
+    maxX = maxValues(fichaList, 'tup', 0)
+    minY = minValues(fichaList, 'tup', 1)
     un = sombra(tablero,minX,maxX)
     velocidad = veloc.get(actual.pieza)
     # al entrar en el for si hay una ficha debajo de un 1 se para de inmediato
@@ -106,12 +107,12 @@ while running:
                 if elem.y >= (ceroY*30)-velocidad: #si hay una ficha debajo de un 1 se para de inmediato porque el valor es mayor que el 1
                     lista = redondear(lista)
                     
-                    yMin = minYLis(lista)
-                    xMin = minXLis(lista)
-                    xMax = maxXLis(lista)
+                    yMin = minValues(lista,'y')
+                    xMin = minValues(lista,'x')
+                    xMax = maxValues(lista,'x')
                     lista = posicionar(tablero,lista,xMin,xMax,yMin)
                     lista = cerosTabl(tablero,lista)
-                    yMax = maxiY(lista)
+                    yMax = maxValues(lista,'y')
                     
                     for objeto in lista:
                         pygame.draw.rect(screen,objeto.color,[objeto.x,objeto.y,30,30])
