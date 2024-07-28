@@ -182,14 +182,21 @@ def collis(tablero,bloques):   # Detectar la posicion mas alta en y de la ficha 
 
     for i, j  in bloques:
 
-        if (i != 0):
+        if (i > 0  and i <= 390):  # verificar caso donde i es cero
+
+
             xBf = tablero[int(j/30)][int((i/30)-1)]
             xAft = tablero[int(j/30)][int((i/30)+1)]
-            if (j != 0):
+
+            if (j > 0):
                 yBf = tablero[int((j/30)-1)][int(i/30)]
                 yAft = tablero[int((j/30)+1)][int(i/30)]
-        else:
-            if j != 0:
+        else: # caso donde i es cero menor que o mayor a 390
+
+            if (i > 390):
+                xBf = tablero[int(j / 30)][int((i / 30) - 1)]
+
+            if j > 0:
                 yBf = tablero[int((j/30) - 1)][int(i/30)]
                 yAft = tablero[int((j/30) + 1)][int(i/30)]
 
@@ -225,6 +232,23 @@ def collis(tablero,bloques):   # Detectar la posicion mas alta en y de la ficha 
         elif yAft == -1:
             par = (-1,-1)
             parejas.append(par)
+
+        elif xBf == 0:
+            par = (-1,-1)
+            parejas.append(par)
+
+        elif xAft == 0:
+            par = (-1,-1)
+            parejas.append(par)
+
+        elif yBf == 0:
+            par = (-1, -1)
+            parejas.append(par)
+
+        elif yAft == 0:
+            par = (-1,-1)
+            parejas.append(par)
+
 
     return parejas
 def minValues(paquete, valor,indice=0):
@@ -451,23 +475,4 @@ def ladosPieza(lista,pieza,rotacion,move):
             Band = False
             break
     return Band
-""" 
-def ladosPieza(lista,pieza,rotacion,move):
-    rotacion = rotacion + move
-    Band = False
-    minI = minXLis(lista)
-    minJ = minYLis(lista)
-    if rotacion <0:
-        rotacion = 3
-    elif rotacion > 3:
-        rotacion = 0
-    cubos = pieza.rotar(rotacion,lista,minI,minJ)
-    for bloque in cubos:
-        if bloque.x > 0 and bloque.x<420:
-            Band = True 
-        else:
-            Band = False
-            break
-    print("Bool"+str(cubos == lista))
-    return Band
- """
+

@@ -41,6 +41,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
+
             if event.key == pygame.K_x:
                 var = lista[:]
                 siguiente = ladosPieza(var,actual,rotacion,1)
@@ -60,7 +61,7 @@ while running:
                     minY = minValues(fichaList,'tup',1)
                     lista = actual.rotar(rotacion,lista,minX,minY)
             
-            if event.key == pygame.K_z:
+            elif event.key == pygame.K_z:
                 var = lista[:]
                 anterior = ladosPieza(lista,actual,rotacion,-1) 
                 if anterior== True:
@@ -77,7 +78,7 @@ while running:
                     lista = actual.rotar(rotacion,lista,minX,minY)
 
 
-            if event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT:
 
 
                 mins = []
@@ -86,7 +87,16 @@ while running:
 
                     mins.append(tupla[0])
 
-                left = min(mins)
+                print("LEFT")
+                print(fichaList)
+                print(coll)
+                print(mins)
+
+
+                if (len(mins) > 1):
+                    left = min(mins)
+                else:
+                    left = mins[0]
 
                 for objeto in lista:
 
@@ -96,12 +106,15 @@ while running:
                 minObj = min(objX)
 
                 if left != -1:
-                    if (minObj >= left + velocidad and x1 >= 0 + velocidad):
-                        lista[0].x -= 300 * dt
-                        lista[1].x -= 300 * dt
-                        lista[2].x -= 300 * dt
-                        lista[3].x -= 300 * dt
+                    if (minObj >= left + 30 and minObj >= 0 + velocidad):
+                        lista[0].x -= 30
+                        lista[1].x -= 30
+                        lista[2].x -= 30
+                        lista[3].x -= 30
 
+                        mins = []
+                        objX =[]
+                        minObj = 0
                 else:
                     if minObj >= 30:
                         lista[0].x -= 30 # * dt
@@ -109,11 +122,120 @@ while running:
                         lista[2].x -= 30
                         lista[3].x -= 30
 
-                    elif minObj <= 0 + velocidad:
-                        pass
+                        mins = []
+                        objX =[]
+                        minObj = 0
+
+            elif event.key == pygame.K_RIGHT:
+
+
+                maxR= []
+                objX = []
+
+                for tupla in coll:
+
+                    maxR.append(tupla[0])
+
+
+
+                if (len(maxR) > 1):
+                    right = max(maxR)
+
+                else:
+                    right = maxR[0]
+
+                for objeto in lista:
+
+                    x1 = objeto.x
+                    objX.append(x1)
+
+                maxObj = max(objX)
+
+                print(fichaList)
+                print(coll)
+                print(maxR)
+
+                if right != -1:
+                    if (maxObj <= right - 30 and maxObj <= 420):
+                        lista[0].x += 30
+                        lista[1].x += 30
+                        lista[2].x += 30
+                        lista[3].x += 30
+
+                else:
+                    print(maxObj)
+                    if maxObj <= 390:
+                        lista[0].x += 30
+                        lista[1].x += 30
+                        lista[2].x += 30
+                        lista[3].x += 30
+
                         # fill the screen with a color to wipe away anything from last frame
+            elif event.key == pygame.K_DOWN:
+
+                maxy = []
+                objY = []
+
+                for tupla in coll:
+
+                    maxy.append(tupla[1])
+
+                print("DOWN")
+                print(fichaList)
+                print(coll)
+                print(maxy)
+
+                if (len(maxy) > 1):
+                    down = max(maxy)
+                else:
+                    down = maxy[0]
+
+                for objeto in lista:
+                    y1 = objeto.x
+                    objY.append(y1)
+
+                maxObj = max(objY)
+
+                if down != -1:
+                    if (maxObj <= down - 30 and maxObj <= 870):
+                        lista[0].y += 30
+                        lista[1].y += 30
+                        lista[2].y += 30
+                        lista[3].y += 30
+
+                    else:
+
+
+                        piece = gen.randomPieza()
+                        color = gen.colores.get(piece)
+                        actual = gen.generaPiece(piece, color)
+                        lista = []
+                        lista = actual.dibujar(rotacion)
+
+                        for objeto in lista:
+                            listaO.append(objeto)
+
+                else:
+                    if maxObj <= 870:
+                        lista[0].y += 30
+                        lista[1].y += 30
+                        lista[2].y += 30
+                        lista[3].y += 30
+
+                    else:
+
+                        piece = gen.randomPieza()
+                        color = gen.colores.get(piece)
+                        actual = gen.generaPiece(piece, color)
+                        lista = []
+                        lista = actual.dibujar(rotacion)
+
+                        for objeto in lista:
+                            listaO.append(objeto)
+
+
     screen.fill((49,38,75))
-    
+
     #for coor in lista:
         #pygame.draw.rect(screen,color,[coor.x,coor.y,30,30])
 
@@ -217,45 +339,8 @@ while running:
         if m>0:
             break
     '''
-    m = 0
 
-    minY = actual.minY(lista)
-    minX = actual.minX(lista)
-    maxX = actual.maxX(lista)
     keys = pygame.key.get_pressed()
-    '''
-    lista[0].y += 150 * dt    # lista[0].y += 30 * dt 
-    lista[1].y += 150 * dt
-    lista[2].y += 150 * dt
-    lista[3].y += 150 * dt    
-    '''
-    if keys[pygame.K_DOWN]:
-        for objeto in lista:
-            y = objeto.y
-            if y == minY:
-                if y >= 850:
-                    pass
-                else:
-                    pass
-            if y < 870:
-                lista[0].y += 100 * dt    # lista[0].y += 30 * dt 
-                lista[1].y += 100 * dt
-                lista[2].y += 100 * dt
-                lista[3].y += 100 * dt         
-
-    if keys[pygame.K_RIGHT]:           
-        for objeto in lista:
-            x2 = objeto.x
-            if x2 == maxX:
-
-                if x2 >=420:
-                    pass
-                else:
-
-                    lista[0].x += 300 * dt
-                    lista[1].x += 300 * dt
-                    lista[2].x += 300 * dt
-                    lista[3].x += 300 * dt
 
     if tablero[2][5] == 1:
         listaO.clear()
