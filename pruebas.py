@@ -28,28 +28,28 @@ while running:
      
     
     # Falta organizar la verificacion de la rotacion que no se salga de la pantalla
-    anterior = ladosPieza(lista,actual,rotacion,-1)
-    siguiente = ladosPieza(lista,actual,rotacion,1)
-    """ anterior = True
-    siguiente = True """
-    """ anterior = True
-    siguiente = True """
 
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
+
+    fichaList = posTabl(lista)
+    coll = collis(tablero, fichaList)  # devuelve una lista con tuplas de coordenadas
+    velocidad = veloc.get(actual.pieza)
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x:
-                var = lista.copy()
+                var = lista[:]
                 siguiente = ladosPieza(var,actual,rotacion,1)
                 #print(siguiente)
-                for elm in lista:
-                        print(elm.x)
-                        print(elm.y)
+
                 if siguiente == True:
-                    print(3)
+                    print(2)
+                    print('max x sg')
+                    print(maxValues(var,'x'))
                     rotacion+=1
                         
                     if rotacion>3:
@@ -61,8 +61,12 @@ while running:
                     lista = actual.rotar(rotacion,lista,minX,minY)
             
             if event.key == pygame.K_z:
+                var = lista[:]
                 anterior = ladosPieza(lista,actual,rotacion,-1) 
                 if anterior== True:
+                    print(3)
+                    print('max x an')
+                    print(maxValues(var, 'x'))
                     rotacion-= 1
                     if rotacion<0:
                         rotacion = 3
@@ -70,9 +74,44 @@ while running:
                     fichaList = posTabl(lista)
                     minX = minValues(fichaList, 'tup', 0)
                     minY = minValues(fichaList, 'tup', 1)
-                lista = actual.rotar(rotacion,lista,minX,minY)
-            
-    # fill the screen with a color to wipe away anything from last frame
+                    lista = actual.rotar(rotacion,lista,minX,minY)
+
+
+            if event.key == pygame.K_LEFT:
+
+
+                mins = []
+                objX = []
+                for tupla in coll:
+
+                    mins.append(tupla[0])
+
+                left = min(mins)
+
+                for objeto in lista:
+
+                    x1 = objeto.x
+                    objX.append(x1)
+
+                minObj = min(objX)
+
+                if left != -1:
+                    if (minObj >= left + velocidad and x1 >= 0 + velocidad):
+                        lista[0].x -= 300 * dt
+                        lista[1].x -= 300 * dt
+                        lista[2].x -= 300 * dt
+                        lista[3].x -= 300 * dt
+
+                else:
+                    if minObj >= 30:
+                        lista[0].x -= 30 # * dt
+                        lista[1].x -= 30
+                        lista[2].x -= 30
+                        lista[3].x -= 30
+
+                    elif minObj <= 0 + velocidad:
+                        pass
+                        # fill the screen with a color to wipe away anything from last frame
     screen.fill((49,38,75))
     
     #for coor in lista:
@@ -86,21 +125,15 @@ while running:
         rellenar(screen,(i,0),(i,900))
     for i in range(0,900,30):
         rellenar(screen,(0,i),(450,i))
-    fichaList = posTabl(lista)
-    #print(fichaList)
-    minX = minValues(fichaList, 'tup', 0)
-    maxX = maxValues(fichaList, 'tup', 0)
-    minY = minValues(fichaList, 'tup', 1)
-    un = sombra(tablero,minX,maxX)
-    velocidad = veloc.get(actual.pieza)
+    #fichaList = posTabl(lista)
+
+
+    #coll = collis(tablero,fichaList)  # metodo sombra deberia estar detectando por encima y por debajo
+    #velocidad = veloc.get(actual.pieza) # ineficiente uso del for
     # al entrar en el for si hay una ficha debajo de un 1 se para de inmediato
-    for i, j in fichaList:
-        x = int(i/30)
-        y = int(j/30)
-        ceroY = un.get(x)
-        
-        bande = unosJ(tablero,x,y)  # No está revisando si hay fichas encima solo si es mayor que algo, entonces simplementa la corta en el aire cuando detecta el 1
-        
+
+
+    '''
         if bande:
             for elem in lista:
                 
@@ -162,7 +195,7 @@ while running:
                     m+=1
                     imprimirTablero(tablero)
                     
-                    """ lista = redondear(lista)
+                     lista = redondear(lista)
                     
                     for objeto in lista:
                         pygame.draw.rect(screen,objeto.color,[objeto.x,objeto.y,30,30])
@@ -179,21 +212,23 @@ while running:
                     listaO.append(lista)
                     m+=1
                     imprimirTablero(tablero)
-                     """
+                     
                     break
         if m>0:
             break
+    '''
     m = 0
-    un = {}
+
     minY = actual.minY(lista)
     minX = actual.minX(lista)
     maxX = actual.maxX(lista)
     keys = pygame.key.get_pressed()
-
+    '''
     lista[0].y += 150 * dt    # lista[0].y += 30 * dt 
     lista[1].y += 150 * dt
     lista[2].y += 150 * dt
     lista[3].y += 150 * dt    
+    '''
     if keys[pygame.K_DOWN]:
         for objeto in lista:
             y = objeto.y
@@ -207,20 +242,6 @@ while running:
                 lista[1].y += 100 * dt
                 lista[2].y += 100 * dt
                 lista[3].y += 100 * dt         
-    if keys[pygame.K_LEFT]:
-        
-            for objeto in lista:
-                x1 = objeto.x
-                if x1 == minX:
-                    if x1 <= 2:
-                        pass
-                    else:
-                        lista[0].x -= 300 * dt
-                        lista[1].x -= 300 * dt
-                        lista[2].x -= 300 * dt
-                        lista[3].x -= 300 * dt 
-                else:
-                    pass  
 
     if keys[pygame.K_RIGHT]:           
         for objeto in lista:

@@ -172,21 +172,61 @@ def ordenar(tablero):
                 break
     return min 
             
-def sombra(tablero,ini,fin):   # Detectar la posicion mas alta en y de la ficha en su sombra
-    min = {} 
-    valor = 0
-    for i in range(ini,fin+1,1):
-        for j in range(0,len(tablero),1):
-            valor = tablero[j][i]
-            if valor == 1:
-                min[i] = j
-                break
-        """ if valor == 0:
-            min[i]= 30 """
-    """ if min == {}:
-        for i in range(ini,fin+1,1):
-            min[i]= 29 """
-    return min
+def collis(tablero,bloques):   # Detectar la posicion mas alta en y de la ficha en su sombra
+    
+    parejas = []
+    xBf = -1
+    xAft = -1
+    yBf = -1
+    yAft = -1
+
+    for i, j  in bloques:
+
+        if (i != 0):
+            xBf = tablero[int(j/30)][int((i/30)-1)]
+            xAft = tablero[int(j/30)][int((i/30)+1)]
+            if (j != 0):
+                yBf = tablero[int((j/30)-1)][int(i/30)]
+                yAft = tablero[int((j/30)+1)][int(i/30)]
+        else:
+            if j != 0:
+                yBf = tablero[int((j/30) - 1)][int(i/30)]
+                yAft = tablero[int((j/30) + 1)][int(i/30)]
+
+        if xBf == 1:
+
+            par = ((i/30)-1, j/30)
+            parejas.append(par)
+
+        elif xAft == 1:
+            par = ((i / 30) + 1 , j / 30)
+            parejas.append(par)
+
+        elif yBf == 1:
+            par = (i / 30, (j/30) - 1)
+            parejas.append(par)
+
+        elif yAft == 1:
+            par = (i / 30, (j / 30) + 1)
+            parejas.append(par)
+
+        elif xBf == -1:
+            par = (-1,-1)
+            parejas.append(par)
+
+        elif xAft == -1:
+            par = (-1,-1)
+            parejas.append(par)
+
+        elif yBf == -1:
+            par = (-1, -1)
+            parejas.append(par)
+
+        elif yAft == -1:
+            par = (-1,-1)
+            parejas.append(par)
+
+    return parejas
 def minValues(paquete, valor,indice=0):
     min = 1000
     if valor == 'x' or  valor == 'y':
@@ -358,8 +398,8 @@ def posLado(pieza):
 def ladosPieza(lista,pieza,rotacion,move):
     rotacionX = rotacion + move
     Band = False
-    minI = minXLis(lista)
-    minJ = minYLis(lista)
+    minI = minValues(lista, 'x')
+    minJ = minValues(lista, 'y')
     if rotacionX <0:
         rotacionX = 3
     elif rotacionX > 3:
@@ -396,12 +436,16 @@ def ladosPieza(lista,pieza,rotacion,move):
                     # [ [0,1],[1,1],[1,0]]
             value = forma[i][j]
             if value == 1:
-                valX[y] = forma[i][j]*(j+minI)*30
-                valY[y] = forma[i][j]*(i+minJ)*30
-                #increm+=1
+                valX[y] = value*(j+minI)*30
+                valY[y] = value*(i+minJ)*30
+
                 y += 1
+    print('___________')
+    for elem in valX:
+        print(elem)
+    print('___________')
     for coor in valX:
-        if coor > 0 and coor<450:
+        if coor > 0 and coor < 450:
             Band = True
         else:
             Band = False
