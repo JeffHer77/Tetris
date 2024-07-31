@@ -6,7 +6,6 @@ pygame.init()
 screen = pygame.display.set_mode((450, 900))  #pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
-dt = 0
 tablero = tablero()
 for i in range(0,15,1):
     tablero = unos(tablero,30,i)
@@ -18,6 +17,9 @@ rotacion = 0
 lista = ele.dibujar(rotacion)
 actual = ele
 listaO =[]
+FALL = pygame.USEREVENT + 1
+pygame.time.set_timer(FALL, 300)
+
 for objeto in lista: # se cambio el agregar la lista completa a listaO
     listaO.append(objeto)
 key_state = False
@@ -45,12 +47,10 @@ while running:
             if event.key == pygame.K_x:
                 var = lista[:]
                 siguiente = ladosPieza(var,actual,rotacion,1)
-                #print(siguiente)
+
 
                 if siguiente == True:
-                    print(2)
-                    print('max x sg')
-                    print(maxValues(var,'x'))
+
                     rotacion+=1
                         
                     if rotacion>3:
@@ -65,9 +65,7 @@ while running:
                 var = lista[:]
                 anterior = ladosPieza(lista,actual,rotacion,-1) 
                 if anterior== True:
-                    print(3)
-                    print('max x an')
-                    print(maxValues(var, 'x'))
+
                     rotacion-= 1
                     if rotacion<0:
                         rotacion = 3
@@ -86,12 +84,6 @@ while running:
                 for tupla in coll:
 
                     mins.append(tupla[0])
-
-                print("LEFT")
-                print(fichaList)
-                print(coll)
-                print(mins)
-
 
                 if (len(mins) > 1):
                     left = min(mins)
@@ -151,9 +143,6 @@ while running:
 
                 maxObj = max(objX)
 
-                print(fichaList)
-                print(coll)
-                print(maxR)
 
                 if right != -1:
                     if (maxObj <= right - 30 and maxObj <= 420):
@@ -163,7 +152,7 @@ while running:
                         lista[3].x += 30
 
                 else:
-                    print(maxObj)
+
                     if maxObj <= 390:
                         lista[0].x += 30
                         lista[1].x += 30
@@ -173,38 +162,31 @@ while running:
                         # fill the screen with a color to wipe away anything from last frame
             elif event.key == pygame.K_DOWN:
 
-                maxy = []
-                objY = []
+                valcol = []
+                valuesFich = []
+                band = False
+
+                for tupla in fichaList:
+                    valuesFich.append((tupla[0], tupla[1] + 30))
 
                 for tupla in coll:
 
-                    maxy.append(tupla[1])
+                    if tupla[0] != -1:
+                        valcol.append((tupla[0] * 30, tupla[1] * 30))
 
-                print("DOWN")
-                print(fichaList)
-                print(coll)
-                print(maxy)
+                print("_____________")
+                print(valuesFich)
+                print(valcol)
+                print("*************")
 
-                if (len(maxy) > 1):
-                    down = max(maxy)
-                else:
-                    down = maxy[0]
+                for tuple in valuesFich:
 
-                for objeto in lista:
-                    y1 = objeto.x
-                    objY.append(y1)
+                    if tuple in valcol:
 
-                maxObj = max(objY)
-
-                if down != -1:
-                    if (maxObj <= down - 30 and maxObj <= 870):
-                        lista[0].y += 30
-                        lista[1].y += 30
-                        lista[2].y += 30
-                        lista[3].y += 30
-
-                    else:
-
+                        for x, y in fichaList:
+                            i = int(x / 30)
+                            j = int(y / 30)
+                            tablero = unos(tablero, j, i)
 
                         piece = gen.randomPieza()
                         color = gen.colores.get(piece)
@@ -215,14 +197,49 @@ while running:
                         for objeto in lista:
                             listaO.append(objeto)
 
-                else:
-                    if maxObj <= 870:
-                        lista[0].y += 30
-                        lista[1].y += 30
-                        lista[2].y += 30
-                        lista[3].y += 30
+                        valcol = {}
+                        valuesFich = {}
+                        imprimirTablero(tablero)
 
-                    else:
+                else:
+
+                    band = True
+
+                if band:
+                    lista[0].y += 30
+                    lista[1].y += 30
+                    lista[2].y += 30
+                    lista[3].y += 30
+
+        elif event.type == FALL:
+
+            valcol = []
+            valuesFich = []
+            band = False
+
+            for tupla in fichaList:
+
+                valuesFich.append(( tupla[0] , tupla[1]+30 ))
+
+            for tupla in coll:
+
+                if tupla[0] != -1:
+
+                    valcol.append(( tupla[0] * 30 , tupla[1] * 30 ))
+
+            print("_____________")
+            print(valuesFich)
+            print(valcol)
+            print("*************")
+
+            for tuple in valuesFich:
+
+                    if tuple in valcol:
+
+                        for x, y in fichaList:
+                            i = int(x / 30)
+                            j = int(y / 30)
+                            tablero = unos(tablero, j, i)
 
                         piece = gen.randomPieza()
                         color = gen.colores.get(piece)
@@ -233,13 +250,23 @@ while running:
                         for objeto in lista:
                             listaO.append(objeto)
 
+                        valcol = {}
+                        valuesFich = {}
+                        imprimirTablero(tablero)
+
+                    else:
+
+                        band = True
+
+            if band:
+
+                lista[0].y += 30
+                lista[1].y += 30
+                lista[2].y += 30
+                lista[3].y += 30
 
     screen.fill((49,38,75))
 
-    #for coor in lista:
-        #pygame.draw.rect(screen,color,[coor.x,coor.y,30,30])
-
-    #for objeto in listaO:
     for coor in listaO: # for coor in objeto:
         pygame.draw.rect(screen,coor.color,[coor.x,coor.y,30,30])
 
@@ -247,100 +274,7 @@ while running:
         rellenar(screen,(i,0),(i,900))
     for i in range(0,900,30):
         rellenar(screen,(0,i),(450,i))
-    #fichaList = posTabl(lista)
 
-
-    #coll = collis(tablero,fichaList)  # metodo sombra deberia estar detectando por encima y por debajo
-    #velocidad = veloc.get(actual.pieza) # ineficiente uso del for
-    # al entrar en el for si hay una ficha debajo de un 1 se para de inmediato
-
-
-    '''
-        if bande:
-            for elem in lista:
-                
-                if elem.y >= (ceroY*30)-velocidad: #si hay una ficha debajo de un 1 se para de inmediato porque el valor es mayor que el 1
-                    lista = redondear(lista)
-                    
-                    yMin = minValues(lista,'y')
-                    xMin = minValues(lista,'x')
-                    xMax = maxValues(lista,'x')
-                    lista = posicionar(tablero,lista,xMin,xMax,yMin)
-                    lista = cerosTabl(tablero,lista)
-                    yMax = maxValues(lista,'y')
-                    
-                    for objeto in lista:
-                        pygame.draw.rect(screen,objeto.color,[objeto.x,objeto.y,30,30])
-                        tablero=unos(tablero,int(objeto.y/30),int(objeto.x/30))    
-                    row = verificarUnos(tablero)
-                    print(row)
-                    if len(row) != 0:
-                        print(row)
-                        listaO = eliminarUnos(listaO,row)
-                        tablero = actualizarTablero(tablero,row)
-                        listaO = bajarObj(row,listaO)   
-                        tablero = bajarUnos(listaO)
-                    piece =  gen.randomPieza()
-                    color =  gen.colores.get(piece)
-                    actual = gen.generaPiece(piece,color)
-                    lista = []
-                    lista = actual.dibujar(rotacion)
-                    for objeto in lista:
-                        listaO.append(objeto)
-                    m+=1
-                    imprimirTablero(tablero)
-                    print("________________________________")
-                    break
-        else:
-            
-            
-            ceroY = verJ(tablero,x,y)
-            for elem in lista:
-                if elem.y >= (ceroY*30)-velocidad: #si hay una ficha debajo de un 1 se para de inmediato porque el valor es mayor que el 1
-                    
-                    lista = redondear(lista)
-                    lista = cerosTabl(tablero,lista)
-                    for objeto in lista:
-                        pygame.draw.rect(screen,objeto.color,[objeto.x,objeto.y,30,30])
-                        tablero=unos(tablero,int(objeto.y/30),int(objeto.x/30))
-                        
-                         
-                   
-
-                    piece =  gen.randomPieza()
-                    color =  gen.colores.get(piece)
-                    actual = gen.generaPiece(piece,color)
-                    lista = []
-                    lista = actual.dibujar(rotacion)
-                    for objeto in lista:
-                        listaO.append(objeto)
-                    m+=1
-                    imprimirTablero(tablero)
-                    
-                     lista = redondear(lista)
-                    
-                    for objeto in lista:
-                        pygame.draw.rect(screen,objeto.color,[objeto.x,objeto.y,30,30])
-                        
-                        tablero=unos(tablero,int(objeto.y/30),int(objeto.x/30))
-                        
-                    
-
-                    piece =  gen.randomPieza()
-                    color =  gen.colores.get(piece)
-                    actual = gen.generaPiece(piece,color)
-                    lista = []
-                    lista = actual.dibujar()
-                    listaO.append(lista)
-                    m+=1
-                    imprimirTablero(tablero)
-                     
-                    break
-        if m>0:
-            break
-    '''
-
-    keys = pygame.key.get_pressed()
 
     if tablero[2][5] == 1:
         listaO.clear()

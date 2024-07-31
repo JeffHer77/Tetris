@@ -16,71 +16,6 @@ def tablero():
         matrix.append(matr)
     return matrix
 
-def redondear (lista):
-    for elemento in lista:
-        x = elemento.x
-        y = elemento.y
-        if x <0: 
-            x =0
-        if y <0:
-            y=0
-        redX = math.floor(x)
-        redY = math.floor(y)
-        resX = x-redX
-        resY = y-redY
-        if resX >= 0.5:
-            x =math.ceil(x) 
-            #print("X redonde " +str(x))
-            decimalX = x/30 
-            redX = math.floor(decimalX)
-            resX = decimalX - redX
-            if resX >= 0.5:
-                redonX = math.ceil(x/30)
-                #print("RedonX es C"+str(redonX)) 
-            else:
-                redonX = math.floor(x/30)
-                #print("RedonX es F "+str(redonX)) 
-        else:
-            x =math.floor(x) 
-            #print("X redonde " +str(x))
-            decimalX = x/30 
-            redX = math.floor(decimalX)
-            resX = decimalX - redX
-            if resX >= 0.5:
-                redonX = math.ceil(x/30)
-                #print("RedonX es C "+str(redonX)) 
-            else:
-                redonX = math.floor(x/30)
-                #print("RedonX es F "+str(redonX)) 
-        if resY >= 0.5:
-            y =math.ceil(y) 
-            #print("Y redonde " +str(y))
-            decimalY = y/30 
-            redY = math.floor(decimalY)
-            resy = decimalY - redY
-            if resy >= 0.5:
-                redonY = math.ceil(y/30)
-                #print("RedonY es C "+str(redonY)) 
-            else:
-                redonY = math.floor(y/30)
-                #print("RedonY es F "+str(redonY)) 
-        else:
-            y =math.floor(y) 
-            #print("Y redonde " +str(y))
-            decimalY = y/30 
-            redY = math.floor(decimalY)
-            resy = decimalY - redY
-            if resy >= 0.5:
-                redonY = math.ceil(y/30)
-                #print("RedonY es C "+str(redonY)) 
-            else:
-                redonY = math.floor(y/30)
-                #print("RedonY es F "+str(redonY)) 
-        #print("res X es "+str(resX)+ " res Y es " +str(resY))        
-        elemento.x = listaX.get(redonX)
-        elemento.y = listaY.get(redonY)
-    return lista
-
 def posTabl (listac):
     posList = []
     lista = listac[:]
@@ -150,6 +85,7 @@ def posTabl (listac):
     return posList
 
 def unos(tablero,row,col):
+
     tablero[row][col] = 1
     return tablero
     
@@ -162,17 +98,7 @@ def imprimirTablero(tablero):
     
     
 
-def ordenar(tablero):
-    min = {}
-    for i in range(0,len(tablero[0]),1):
-        for j in range(0,len(tablero),1):
-            valor = tablero[j][i]
-            if valor == 1:
-                min[i] = j
-                break
-    return min 
-            
-def collis(tablero,bloques):   # Detectar la posicion mas alta en y de la ficha en su sombra
+def collis(tablero,bloques):
     
     parejas = []
     xBf = -1
@@ -180,7 +106,9 @@ def collis(tablero,bloques):   # Detectar la posicion mas alta en y de la ficha 
     yBf = -1
     yAft = -1
 
-    for i, j  in bloques:
+    for i, j in bloques:
+
+        #print("i " + str(i) + " j " + str(j) )
 
         if (i > 0  and i <= 390):  # verificar caso donde i es cero
 
@@ -196,59 +124,44 @@ def collis(tablero,bloques):   # Detectar la posicion mas alta en y de la ficha 
             if (i > 390):
                 xBf = tablero[int(j / 30)][int((i / 30) - 1)]
 
+            if (i == 0):
+                xAft = tablero[int(j / 30)][int((i / 30) + 1)]
             if j > 0:
                 yBf = tablero[int((j/30) - 1)][int(i/30)]
                 yAft = tablero[int((j/30) + 1)][int(i/30)]
 
         if xBf == 1:
 
-            par = ((i/30)-1, j/30)
+            par = (int((i/30)-1), int(j/30))
             parejas.append(par)
 
         elif xAft == 1:
-            par = ((i / 30) + 1 , j / 30)
+            par = (int((i / 30) + 1) , int(j / 30))
             parejas.append(par)
 
         elif yBf == 1:
-            par = (i / 30, (j/30) - 1)
+            par = (int(i / 30), (int(j/30) - 1))
             parejas.append(par)
 
         elif yAft == 1:
-            par = (i / 30, (j / 30) + 1)
+            par = (int(i / 30), (int(j / 30) + 1))
             parejas.append(par)
 
-        elif xBf == -1:
+        elif xBf == -1 or xBf == 0:
             par = (-1,-1)
             parejas.append(par)
 
-        elif xAft == -1:
+        elif xAft == -1 or xAft == 0:
             par = (-1,-1)
             parejas.append(par)
 
-        elif yBf == -1:
+        elif yBf == -1 or yBf == 0:
             par = (-1, -1)
             parejas.append(par)
 
-        elif yAft == -1:
+        elif yAft == -1 or yAft == 0:
             par = (-1,-1)
             parejas.append(par)
-
-        elif xBf == 0:
-            par = (-1,-1)
-            parejas.append(par)
-
-        elif xAft == 0:
-            par = (-1,-1)
-            parejas.append(par)
-
-        elif yBf == 0:
-            par = (-1, -1)
-            parejas.append(par)
-
-        elif yAft == 0:
-            par = (-1,-1)
-            parejas.append(par)
-
 
     return parejas
 def minValues(paquete, valor,indice=0):
@@ -291,17 +204,6 @@ def unosJ(tablero,pos,posy): # el ciclo se corta cuando j es mayor que cero sin 
             res = False
     return res
 
-def verJ(tablero,pos,posy):
-    valor = 0
-    min = 40
-    for j in range(0,len(tablero),1):
-        valor = tablero[j][pos]
-        if valor == 1:
-            if j < min and j > posy:
-                min = j
-
-    return min
-
 def cerosTabl(tablero,lista):
     for objeto in lista:
         x = int(objeto.x/30)
@@ -336,15 +238,16 @@ def posicionar (tablero,lista,menX,maxX,menY):   # La verificacion de la columna
     return lista
 
 def verificarUnos(tablero):
+
     total = 0
-    j = 0
     lista = []
+
     for i in range(0,30,1):
         total = tablero[i].count(1)
         if total == 15:
             lista.append(i)
 
-        j+=1
+
     return lista
 
 def eliminarUnos(listaObjects,filaList):
@@ -464,10 +367,7 @@ def ladosPieza(lista,pieza,rotacion,move):
                 valY[y] = value*(i+minJ)*30
 
                 y += 1
-    print('___________')
-    for elem in valX:
-        print(elem)
-    print('___________')
+
     for coor in valX:
         if coor > 0 and coor < 450:
             Band = True
@@ -476,3 +376,41 @@ def ladosPieza(lista,pieza,rotacion,move):
             break
     return Band
 
+
+
+
+'''
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+0 0 0 0 0 0 0 0 0 1 1 1 0 1 1 
+0 0 0 0 0 0 0 0 1 1 1 1 0 1 1 
+1 0 0 0 0 0 0 0 1 1 1 1 0 0 1 
+1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 
+1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 
+1 0 0 0 0 0 0 0 0 1 0 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+'''
