@@ -174,11 +174,6 @@ while running:
                     if tupla[0] != -1:
                         valcol.append((tupla[0] * 30, tupla[1] * 30))
 
-                print("_____________")
-                print(valuesFich)
-                print(valcol)
-                print("*************")
-
                 for tuple in valuesFich:
 
                     if tuple in valcol:
@@ -227,11 +222,6 @@ while running:
 
                     valcol.append(( tupla[0] * 30 , tupla[1] * 30 ))
 
-            print("_____________")
-            print(valuesFich)
-            print(valcol)
-            print("*************")
-
             for tuple in valuesFich:
 
                     if tuple in valcol:
@@ -252,6 +242,14 @@ while running:
 
                         valcol = {}
                         valuesFich = {}
+                        nums = verificarUnos(tablero)
+                        if len(nums) != 0:
+                            
+                             tablero = actualizarTablero(tablero, nums)
+                             listaO = eliminarUnos(listaO, nums)
+                             listaO = bajarObj(nums, listaO)
+                             tablero = bajarUnos(listaO)
+
                         imprimirTablero(tablero)
 
                     else:

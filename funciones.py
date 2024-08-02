@@ -108,7 +108,6 @@ def collis(tablero,bloques):
 
     for i, j in bloques:
 
-        #print("i " + str(i) + " j " + str(j) )
 
         if (i > 0  and i <= 390):  # verificar caso donde i es cero
 
@@ -135,28 +134,28 @@ def collis(tablero,bloques):
             par = (int((i/30)-1), int(j/30))
             parejas.append(par)
 
-        elif xAft == 1:
-            par = (int((i / 30) + 1) , int(j / 30))
-            parejas.append(par)
-
-        elif yBf == 1:
-            par = (int(i / 30), (int(j/30) - 1))
-            parejas.append(par)
-
-        elif yAft == 1:
-            par = (int(i / 30), (int(j / 30) + 1))
-            parejas.append(par)
-
         elif xBf == -1 or xBf == 0:
             par = (-1,-1)
+            parejas.append(par)
+
+        if xAft == 1:
+            par = (int((i / 30) + 1) , int(j / 30))
             parejas.append(par)
 
         elif xAft == -1 or xAft == 0:
             par = (-1,-1)
             parejas.append(par)
 
+        if yBf == 1:
+            par = (int(i / 30), (int(j/30) - 1))
+            parejas.append(par)
+
         elif yBf == -1 or yBf == 0:
             par = (-1, -1)
+            parejas.append(par)
+
+        if yAft == 1:
+            par = (int(i / 30), (int(j / 30) + 1))
             parejas.append(par)
 
         elif yAft == -1 or yAft == 0:
@@ -237,7 +236,7 @@ def posicionar (tablero,lista,menX,maxX,menY):   # La verificacion de la columna
         lista[i].y = int(y+(posi*30))
     return lista
 
-def verificarUnos(tablero):
+def verificarUnos(tablero):        # lista de las filas llenas
 
     total = 0
     lista = []
@@ -262,10 +261,11 @@ def eliminarUnos(listaObjects,filaList):
         listaObjects.pop(elem)
     return listaObjects
 
-def actualizarTablero(tablero,rows):
-    for i in range(0,15,1):
-        for j in range (0,len(rows),1):
-            tablero[rows[j]][i] = 0
+def actualizarTablero(tablero,rows):  # cambiar a ceros los valores de las filas llenas
+
+    for fila in rows:
+        for i in range(0,15,1):
+            tablero[fila][i] = 0
     return tablero
 
 def bajarObj(lineas,listaObj):
