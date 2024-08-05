@@ -11,20 +11,19 @@ for i in range(0,15,1):
     tablero = unos(tablero,30,i)
 gen = generar(120,-30)
 piece =  gen.randomPieza()
-color = gen.colores.get('l')
-ele = gen.generaPiece('l',color)
+color = gen.colores.get(piece)
+actual = gen.generaPiece(piece,color)
 rotacion = 0
-lista = ele.dibujar(rotacion)
-actual = ele
+lista = actual.dibujar(rotacion)
 listaO =[]
 FALL = pygame.USEREVENT + 1
-pygame.time.set_timer(FALL, 300)
+pygame.time.set_timer(FALL, 200)
 
 for objeto in lista: # se cambio el agregar la lista completa a listaO
     listaO.append(objeto)
 key_state = False
 m =0
-
+print(len(listaO)/4)
 while running:
     
      
@@ -176,31 +175,16 @@ while running:
 
                 for tuple in valuesFich:
 
-                    if tuple in valcol:
+                    if tuple not in valcol:
 
-                        for x, y in fichaList:
-                            i = int(x / 30)
-                            j = int(y / 30)
-                            tablero = unos(tablero, j, i)
+                        band = True
 
-                        piece = gen.randomPieza()
-                        color = gen.colores.get(piece)
-                        actual = gen.generaPiece(piece, color)
-                        lista = []
-                        lista = actual.dibujar(rotacion)
+                    else:
 
-                        for objeto in lista:
-                            listaO.append(objeto)
-
-                        valcol = {}
-                        valuesFich = {}
-                        imprimirTablero(tablero)
-
-                else:
-
-                    band = True
+                        band = False
 
                 if band:
+
                     lista[0].y += 30
                     lista[1].y += 30
                     lista[2].y += 30
@@ -211,6 +195,7 @@ while running:
             valcol = []
             valuesFich = []
             band = False
+
 
             for tupla in fichaList:
 
@@ -231,6 +216,15 @@ while running:
                             j = int(y / 30)
                             tablero = unos(tablero, j, i)
 
+                        nums = verificarUnos(tablero)
+                        if len(nums) != 0:
+
+                             listaO = eliminarUnos(listaO, nums)
+                             tablero = actualizarTablero(tablero, nums)
+                             listaO = bajarObj(nums, listaO)
+                             tablero = bajarUnos(listaO)
+
+
                         piece = gen.randomPieza()
                         color = gen.colores.get(piece)
                         actual = gen.generaPiece(piece, color)
@@ -242,18 +236,15 @@ while running:
 
                         valcol = {}
                         valuesFich = {}
-                        nums = verificarUnos(tablero)
-                        if len(nums) != 0:
-                            
-                             tablero = actualizarTablero(tablero, nums)
-                             listaO = eliminarUnos(listaO, nums)
-                             listaO = bajarObj(nums, listaO)
-                             tablero = bajarUnos(listaO)
+
 
                         imprimirTablero(tablero)
 
+                        break
+
                     else:
 
+                        bajar = True
                         band = True
 
             if band:
@@ -276,7 +267,7 @@ while running:
 
     if tablero[2][5] == 1:
         listaO.clear()
-        
+
         piece =  gen.randomPieza()
         color =  gen.colores.get(piece)
         actual = gen.generaPiece(piece,color)
@@ -284,7 +275,7 @@ while running:
         lista = actual.dibujar(rotacion)
         for objeto in lista:
             listaO.append(objeto)
-                   
+
         imprimirTablero(tablero)
         for i in range(0,15,1):
             for j in range(0,30,1):

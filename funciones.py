@@ -190,52 +190,6 @@ def maxValues(paquete, valor, indice=0):
             if aux > max:
                 max = aux
     return max
-def unosJ(tablero,pos,posy): # el ciclo se corta cuando j es mayor que cero sin ver si hay fichas encima o no
-    valor = 0
-    encima = 0
-    res = True
-    for j in range(0,len(tablero),1):
-        valor = tablero[j][pos]
-        if valor == 1:
-            if j < posy:
-                encima = valor
-        if 1 == encima:
-            res = False
-    return res
-
-def cerosTabl(tablero,lista):
-    for objeto in lista:
-        x = int(objeto.x/30)
-        y = int(objeto.y/30)
-        valor = tablero[y][x]
-        if valor == 1:
-            lista[0].y = (lista[0].y-30)
-            lista[1].y = (lista[1].y-30)
-            lista[2].y = (lista[2].y-30)
-            lista[3].y = (lista[3].y-30)
-    return lista
-
-def posicionar (tablero,lista,menX,maxX,menY):   # La verificacion de la columna y espacios a deplazar ese puede hacer con el i y j para restarlos
-    posi = 0
-    for i in range (menX,maxX+1,1):
-        for j in range (menY,len(tablero),1):
-            valor = tablero[j][i]
-            if valor == 1:
-                y = j
-                for objeto in lista:
-                    valY = objeto.y /30
-                    if  y-valY -1 <= 1:
-                        posi = y-valY-1
-                        break
-            if posi != 0:
-                break
-        if posi != 0:
-            break
-    for i in range(0,len(lista),1): # posi-1 da la coordenada donde se pone
-        y = lista[i].y
-        lista[i].y = int(y+(posi*30))
-    return lista
-
 def verificarUnos(tablero):        # lista de las filas llenas
 
     total = 0
@@ -253,9 +207,8 @@ def eliminarUnos(listaObjects,filaList):
     borrar = []
     for i in range (0,len(listaObjects),1):
         y = int(listaObjects[i].y/30)
-        for elem in filaList:
-            if y == elem:
-                    borrar.append(i)
+        if y in filaList:
+            borrar.append(i)
     borrar.sort(reverse=True)
     for elem in borrar:
         listaObjects.pop(elem)
@@ -286,41 +239,6 @@ def bajarUnos(listaObj):
         colX = int(bloques.x/30)
         table = unos(table,lineaY,colX)
     return table
-
-
-def posLado(pieza):
-    for elemento in pieza:
-        x = elemento.x
-        if x <0:
-            x =0
-        redX = math.floor(x)
-        resX = x-redX
-        if resX >= 0.5:
-            x =math.ceil(x)
-            #print("X redonde " +str(x))
-            decimalX = x/30
-            redX = math.floor(decimalX)
-            resX = decimalX - redX
-            if resX >= 0.5:
-                redonX = math.ceil(x/30)
-                #print("RedonX es C"+str(redonX))
-            else:
-                redonX = math.floor(x/30)
-                #print("RedonX es F "+str(redonX))
-        else:
-            x =math.floor(x)
-            #print("X redonde " +str(x))
-            decimalX = x/30
-            redX = math.floor(decimalX)
-            resX = decimalX - redX
-            if resX >= 0.5:
-                redonX = math.ceil(x/30)
-                #print("RedonX es C "+str(redonX))
-            else:
-                redonX = math.floor(x/30)
-                #print("RedonX es F "+str(redonX))
-        elemento.x = listaX.get(redonX)
-    return pieza
 
 def ladosPieza(lista,pieza,rotacion,move):
     rotacionX = rotacion + move
