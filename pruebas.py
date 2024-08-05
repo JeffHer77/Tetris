@@ -77,88 +77,71 @@ while running:
 
             elif event.key == pygame.K_LEFT:
 
+                valcol = []
+                valuesFich = []
+                band = False
+                cont = 0
 
-                mins = []
-                objX = []
+                for tupla in fichaList:
+                    valuesFich.append((tupla[0] - 30, tupla[1]))
+
                 for tupla in coll:
 
-                    mins.append(tupla[0])
+                    if tupla[0] != -1:
+                        valcol.append((tupla[0] * 30, tupla[1] * 30))
 
-                if (len(mins) > 1):
-                    left = min(mins)
-                else:
-                    left = mins[0]
+                for tuple in valuesFich:
 
-                for objeto in lista:
+                    if tuple in valcol:
 
-                    x1 = objeto.x
-                    objX.append(x1)
+                        band = True
 
-                minObj = min(objX)
+                    else:
 
-                if left != -1:
-                    if (minObj >= left + 30 and minObj >= 0 + velocidad):
-                        lista[0].x -= 30
-                        lista[1].x -= 30
-                        lista[2].x -= 30
-                        lista[3].x -= 30
+                        band = False
+                        cont+=1
 
-                        mins = []
-                        objX =[]
-                        minObj = 0
-                else:
-                    if minObj >= 30:
-                        lista[0].x -= 30 # * dt
-                        lista[1].x -= 30
-                        lista[2].x -= 30
-                        lista[3].x -= 30
-
-                        mins = []
-                        objX =[]
-                        minObj = 0
+                if band == False and cont == 4:
+                    lista[0].x -= 30
+                    lista[1].x -= 30
+                    lista[2].x -= 30
+                    lista[3].x -= 30
 
             elif event.key == pygame.K_RIGHT:
 
+                valcol = []
+                valuesFich = []
+                band = False
+                cont = 0
 
-                maxR= []
-                objX = []
+                for tupla in fichaList:
+                    valuesFich.append((tupla[0] + 30, tupla[1]))
 
                 for tupla in coll:
 
-                    maxR.append(tupla[0])
+                    if tupla[0] != -1:
+                        valcol.append((tupla[0] * 30, tupla[1] * 30))
+
+                for tuple in valuesFich:
+
+                    if tuple in valcol:
+
+                        band = True
+
+                    else:
+
+                        band = False
+                        cont += 1
+
+                if band == False and cont == 4:
+
+                    lista[0].x += 30
+                    lista[1].x += 30
+                    lista[2].x += 30
+                    lista[3].x += 30
 
 
-
-                if (len(maxR) > 1):
-                    right = max(maxR)
-
-                else:
-                    right = maxR[0]
-
-                for objeto in lista:
-
-                    x1 = objeto.x
-                    objX.append(x1)
-
-                maxObj = max(objX)
-
-
-                if right != -1:
-                    if (maxObj <= right - 30 and maxObj <= 420):
-                        lista[0].x += 30
-                        lista[1].x += 30
-                        lista[2].x += 30
-                        lista[3].x += 30
-
-                else:
-
-                    if maxObj <= 390:
-                        lista[0].x += 30
-                        lista[1].x += 30
-                        lista[2].x += 30
-                        lista[3].x += 30
-
-                        # fill the screen with a color to wipe away anything from last frame
+                # fill the screen with a color to wipe away anything from last frame
             elif event.key == pygame.K_DOWN:
 
                 valcol = []
