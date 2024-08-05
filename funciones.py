@@ -295,8 +295,6 @@ def ladosPieza(lista,pieza,rotacion,move):
     return Band
 
 
-
-
 '''
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 

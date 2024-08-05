@@ -62,14 +62,14 @@ while running:
             
             elif event.key == pygame.K_z:
                 var = lista[:]
-                anterior = ladosPieza(lista,actual,rotacion,-1) 
+                anterior = ladosPieza(var,actual,rotacion,-1)
                 if anterior== True:
 
                     rotacion-= 1
                     if rotacion<0:
                         rotacion = 3
                 
-                    fichaList = posTabl(lista)
+                    fichaList = posTabl(var)
                     minX = minValues(fichaList, 'tup', 0)
                     minY = minValues(fichaList, 'tup', 1)
                     lista = actual.rotar(rotacion,lista,minX,minY)
@@ -92,7 +92,7 @@ while running:
 
                 for tuple in valuesFich:
 
-                    if tuple in valcol:
+                    if tuple in valcol or tuple[0] < 0:
 
                         band = True
 
@@ -124,7 +124,7 @@ while running:
 
                 for tuple in valuesFich:
 
-                    if tuple in valcol:
+                    if tuple in valcol or tuple[0] == 450:
 
                         band = True
 
@@ -248,7 +248,7 @@ while running:
         rellenar(screen,(0,i),(450,i))
 
 
-    if tablero[2][5] == 1:
+    if 1 in tablero[3]:
         listaO.clear()
 
         piece =  gen.randomPieza()
